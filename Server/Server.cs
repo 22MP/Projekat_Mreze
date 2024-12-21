@@ -18,6 +18,7 @@ namespace Server
     {
         private static readonly string datoteka_knjige = "dostupne_knjige.txt";
         private static readonly string datoteka_iznajmljivanja = "trenutna_iznajmljivanja.txt";
+        private static readonly string datoteka_korisnici = "korisnici_id.txt";
         private static bool shouldStop = false;     // Informacija da se server treba zaustaviti
         private static List<Socket> aktivniSocketi = new List<Socket>();   // Socketi koje treba osluskivati
         static void Main(string[] args)
@@ -41,6 +42,7 @@ namespace Server
             CitanjeDatotekeServis citanjeDatServis = new CitanjeDatotekeServis();
             List<Knjiga> listaKnjiga = new UcitavanjeKnjigaServis().UcitajKnjige(citanjeDatServis.ProcitajIzDatoteke(datoteka_knjige));
             List<Iznajmljivanje> listaIznajmljivanja = new UcitavanjeIznajmljivanjaServis().UcitajIznajmljivanja(citanjeDatServis.ProcitajIzDatoteke(datoteka_iznajmljivanja));
+            List<int> listaKorisnika = new UcitavanjeKorisnikaServis().UcitajKorisnike(citanjeDatServis.ProcitajIzDatoteke(datoteka_korisnici));
             #endregion
 
             #region Inicijalizacija potrebnih servisa
@@ -49,7 +51,7 @@ namespace Server
 
             #region Slusanje socketa
             Console.CancelKeyPress += new ConsoleCancelEventHandler(ObradiCancelKeyPress);      // Handler za CTRL+C
-            
+
             tcpSocket.Listen(50);
             aktivniSocketi.Add(tcpSocket);
             aktivniSocketi.Add(udpSocket);
@@ -88,6 +90,7 @@ namespace Server
             #region Cuvanje izmenjenih podataka u datoteke
             new CuvanjeKnjigaServis().SacuvajKnjige(datoteka_knjige, listaKnjiga);
             new CuvanjeIznajmljivanjaServis().SacuvajIznajmljivanja(datoteka_iznajmljivanja, listaIznajmljivanja);
+            new CuvanjeKorisnikaServis().SacuvajKorisnike(datoteka_korisnici, listaKorisnika);
             #endregion
 
             Console.WriteLine();

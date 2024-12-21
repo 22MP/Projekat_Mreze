@@ -47,9 +47,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CuvanjePodatakaServisi\CuvanjeIznajmljivanjaServis.cs" />
     <Compile Include="Services\CuvanjePodatakaServisi\CuvanjeKnjigaServis.cs" />
+    <Compile Include="Services\CuvanjePodatakaServisi\CuvanjeKorisnikaServis.cs" />
     <Compile Include="Services\UcitavanjePodatakaServisi\CitanjeDatotekeServis.cs" />
     <Compile Include="Services\UcitavanjePodatakaServisi\UcitavanjeIznajmljivanjaServis.cs" />
     <Compile Include="Services\UcitavanjePodatakaServisi\UcitavanjeKnjigaServis.cs" />
+    <Compile Include="Services\UcitavanjePodatakaServisi\UcitavanjeKorisnikaServis.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
