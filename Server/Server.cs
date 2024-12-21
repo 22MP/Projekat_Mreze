@@ -19,6 +19,9 @@ namespace Server
         private static bool shouldStop = false;     // Informacija da se server treba zaustaviti
         static void Main(string[] args)
         {
+            Console.WriteLine("Server je poceo sa radom.");
+            Console.WriteLine();
+
             #region Inicijalizacija server socketa
             Socket tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             Socket udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
@@ -38,13 +41,26 @@ namespace Server
             #endregion
 
             #region Slusanje socketa
-
+            Console.CancelKeyPress += new ConsoleCancelEventHandler(ObradiCancelKeyPress);
+            while (!shouldStop)
+            {
+                
+            }
             #endregion
 
             #region Cuvanje izmenjenih podataka u datoteke
             new CuvanjeKnjigaServis().SacuvajKnjige(datoteka_knjige, listaKnjiga);
             new CuvanjeIznajmljivanjaServis().SacuvajIznajmljivanja(datoteka_iznajmljivanja, listaIznajmljivanja);
             #endregion
+
+            Console.WriteLine();
+            Console.WriteLine("Server je stabilno zavrsio sa radom.");
+        }
+
+        static void ObradiCancelKeyPress(object sender, ConsoleCancelEventArgs args)
+        {
+            shouldStop = true;
+            args.Cancel = true;    // Sprecavamo server da se nasilno zatvori, zelimo da prvo sacuva podatke
         }
     }
 }
