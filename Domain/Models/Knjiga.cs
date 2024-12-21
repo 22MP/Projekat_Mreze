@@ -8,7 +8,6 @@ namespace Domain.Models
 {
     public class Knjiga
     {
-
         public string Naslov {  get; set; }
         public string Autor {  get; set; }
         public int Kolicina {  get; set; }
