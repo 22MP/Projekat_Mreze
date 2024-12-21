@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Domain.Models;
+using Server.Services.UcitavanjePodatakaServisi;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -21,7 +23,14 @@ namespace Server
 
             Console.WriteLine($"PRISTUPNA UTICNICA: {serverEP}");
             Console.WriteLine($"INFO UTICNICA: {serverEP}");
+            Console.WriteLine();
             #endregion
+
+            CitanjeDatotekeServis citanjeDatServis = new CitanjeDatotekeServis();
+            List<Knjiga> dostupneKnjige = new UcitavanjeKnjigaServis().UcitajKnjige(citanjeDatServis.ProcitajIzDatoteke("dostupne_knjige.txt"));
+            
+            foreach (Knjiga knjiga in dostupneKnjige)
+                Console.WriteLine(knjiga);
         }
     }
 }
