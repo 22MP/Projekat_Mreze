@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using Klijent.Services.PrijavaServisi;
+using Services.PisanjePorukaServisi;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,6 +18,9 @@ namespace Klijent
         private static int id;
         static void Main(string[] args)
         {
+            Console.WriteLine("Klijent poceo sa radom.");
+            Console.WriteLine();
+
             #region Ucitavanje ID-a klijenta
             id = new IdUcitavanjeServis().UcitajId(datoteka_id);
             #endregion
@@ -27,9 +31,31 @@ namespace Klijent
 
             IPEndPoint serverEP = new IPEndPoint(IPAddress.Loopback, 50100);
 
-            // tcpSocket.Connect(serverEP);
+            tcpSocket.Connect(serverEP);
+            Console.WriteLine("Klijent uspesno povezan");
             #endregion
 
+            #region Inicijalizacija potrebnih servisa
+            TcpSlanjeServis tcpSlanjeServis = new TcpSlanjeServis();
+            #endregion
+
+            #region Prijavljivanje na server
+            bool isSent = tcpSlanjeServis.PosaljiPoruku(tcpSocket, $"PRIJAVA:{id}");
+            if (!isSent) {
+                Console.WriteLine("Klijent se gasi zbog neuspesne prijave. Probajte opet.");
+                return;     // Greska prilikom slanja poruke -> onemogucena prijava -> klijent se gasi
+            }
+            else
+                Console.WriteLine("Uspesno slanje");
+            #endregion
+
+            #region Zatvaranje socketa
+            tcpSocket.Shutdown(SocketShutdown.Both);
+            tcpSocket.Close();
+            udpSocket.Close();
+            Console.WriteLine();
+            Console.WriteLine("Klijent zavrsio sa radom.");
+            #endregion
         }
     }
 }

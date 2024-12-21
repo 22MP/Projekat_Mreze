@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Server.Services.CitanjePorukaServisi;
 using Server.Services.CuvanjePodatakaServisi;
 using Server.Services.UcitavanjePodatakaServisi;
 using System;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Server
@@ -17,6 +19,7 @@ namespace Server
         private static readonly string datoteka_knjige = "dostupne_knjige.txt";
         private static readonly string datoteka_iznajmljivanja = "trenutna_iznajmljivanja.txt";
         private static bool shouldStop = false;     // Informacija da se server treba zaustaviti
+        private static List<Socket> aktivniSocketi = new List<Socket>();   // Socketi koje treba osluskivati
         static void Main(string[] args)
         {
             Console.WriteLine("Server je poceo sa radom.");
@@ -40,11 +43,45 @@ namespace Server
             List<Iznajmljivanje> listaIznajmljivanja = new UcitavanjeIznajmljivanjaServis().UcitajIznajmljivanja(citanjeDatServis.ProcitajIzDatoteke(datoteka_iznajmljivanja));
             #endregion
 
+            #region Inicijalizacija potrebnih servisa
+            TcpCitanjeServis tcpCitanjeServis = new TcpCitanjeServis();
+            #endregion
+
             #region Slusanje socketa
-            Console.CancelKeyPress += new ConsoleCancelEventHandler(ObradiCancelKeyPress);
+            Console.CancelKeyPress += new ConsoleCancelEventHandler(ObradiCancelKeyPress);      // Handler za CTRL+C
+            
+            tcpSocket.Listen(50);
+            aktivniSocketi.Add(tcpSocket);
+            aktivniSocketi.Add(udpSocket);
+
             while (!shouldStop)
             {
-                
+                List<Socket> checkRead = new List<Socket>(aktivniSocketi);   // Da li treba citati sa bilo kojeg od aktivnih socketa
+
+                Socket.Select(checkRead, null, null, 5_000_000);   // Server svakih 5s proverava da li je vreme da se ugasi
+
+                foreach (Socket socket in checkRead) {
+                    if (socket == tcpSocket)
+                    {
+                        Socket clientSocket = tcpSocket.Accept();   // Prihvatamo zahtev za novu TCP konekciju od klijenta
+                        aktivniSocketi.Add(clientSocket);
+                    }
+                    else if (socket != udpSocket)       // TCP poruka
+                    {
+                        string poruka = tcpCitanjeServis.ProcitajPoruku(socket);
+
+                        if (poruka == String.Empty)     // Taj socket je poslao poruku kao indikator da prekida konekciju
+                        {
+                            aktivniSocketi.Remove(socket);
+                        }
+                        else if (poruka.StartsWith("PRIJAVA:"))
+                        {
+                            Console.WriteLine("Pokusaj prijave.");
+                        }
+                        else
+                            Console.WriteLine("Greska");
+                    }
+                }
             }
             #endregion
 
