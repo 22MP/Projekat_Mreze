@@ -16,6 +16,7 @@ namespace Server
     {
         private static readonly string datoteka_knjige = "dostupne_knjige.txt";
         private static readonly string datoteka_iznajmljivanja = "trenutna_iznajmljivanja.txt";
+        private static bool shouldStop = false;     // Informacija da se server treba zaustaviti
         static void Main(string[] args)
         {
             #region Inicijalizacija server socketa
@@ -34,6 +35,10 @@ namespace Server
             CitanjeDatotekeServis citanjeDatServis = new CitanjeDatotekeServis();
             List<Knjiga> listaKnjiga = new UcitavanjeKnjigaServis().UcitajKnjige(citanjeDatServis.ProcitajIzDatoteke(datoteka_knjige));
             List<Iznajmljivanje> listaIznajmljivanja = new UcitavanjeIznajmljivanjaServis().UcitajIznajmljivanja(citanjeDatServis.ProcitajIzDatoteke(datoteka_iznajmljivanja));
+            #endregion
+
+            #region Slusanje socketa
+
             #endregion
 
             #region Cuvanje izmenjenih podataka u datoteke
