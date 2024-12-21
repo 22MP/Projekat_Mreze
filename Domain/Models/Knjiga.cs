@@ -8,7 +8,11 @@ namespace Domain.Models
 {
     public class Knjiga
     {
-        public Knjiga() {}
+
+        public string Naslov {  get; set; }
+        public string Autor {  get; set; }
+        public int Kolicina {  get; set; }
+        public Knjiga() { }
 
         public Knjiga(string naslov, string autor, int kolicina)
         {
@@ -17,13 +21,9 @@ namespace Domain.Models
             Kolicina = kolicina;
         }
 
-        public string Naslov {  get; set; }
-        public string Autor {  get; set; }
-        public int Kolicina {  get; set; }
-
         public override string ToString()
         {
-            return $"{Naslov} - {Autor} [{Kolicina}]";
+            return $"{Naslov,-20} {Autor,-20} [{Kolicina}]";
         }
     }
 }

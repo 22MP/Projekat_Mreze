@@ -26,11 +26,14 @@ namespace Server
             Console.WriteLine();
             #endregion
 
+            #region Ucitavanje podataka iz datoteka
             CitanjeDatotekeServis citanjeDatServis = new CitanjeDatotekeServis();
-            List<Knjiga> dostupneKnjige = new UcitavanjeKnjigaServis().UcitajKnjige(citanjeDatServis.ProcitajIzDatoteke("dostupne_knjige.txt"));
-            
-            foreach (Knjiga knjiga in dostupneKnjige)
-                Console.WriteLine(knjiga);
+            List<Knjiga> listaKnjiga = new UcitavanjeKnjigaServis().UcitajKnjige(citanjeDatServis.ProcitajIzDatoteke("dostupne_knjige.txt"));
+            List<Iznajmljivanje> listaIznajmljivanja = new UcitavanjeIznajmljivanjaServis().UcitajIznajmljivanja(citanjeDatServis.ProcitajIzDatoteke("trenutna_iznajmljivanja.txt"));
+            #endregion
+
+
+
         }
     }
 }
