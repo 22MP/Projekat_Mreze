@@ -1,8 +1,10 @@
 ﻿using Domain.Models;
 using Server.Services.CitanjePorukaServisi;
 using Server.Services.CuvanjePodatakaServisi;
+using Server.Services.IznajmljivanjeServisi;
 using Server.Services.PrijavljivanjeServisi;
 using Server.Services.UcitavanjePodatakaServisi;
+using Services.CitanjeDatotekeServisi;
 using Services.PisanjePorukaServisi;
 using System;
 using System.Collections.Generic;
@@ -51,6 +53,7 @@ namespace Server
             TcpCitanjeServis tcpCitanjeServis = new TcpCitanjeServis();
             TcpSlanjeServis tcpSlanjeServis = new TcpSlanjeServis();
             PrijavaKlijentaServis prijavaKlijenataServis = new PrijavaKlijentaServis();
+            IznajmljivanjeServis iznajmljivanjeServis = new IznajmljivanjeServis();
             #endregion
 
             #region Slusanje socketa
@@ -86,6 +89,10 @@ namespace Server
 
                             if (!uspesnaPrijava)
                                 aktivniSocketi.Remove(socket);
+                        }
+                        else if (poruka.StartsWith("IZNAJMLJIVANJE"))
+                        {
+                            iznajmljivanjeServis.ObradiZahtev(socket, poruka, listaIznajmljivanja, listaKnjiga, tcpCitanjeServis, tcpSlanjeServis);
                         }
                         else
                             Console.WriteLine("Greska");
