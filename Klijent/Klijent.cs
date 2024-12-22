@@ -23,6 +23,7 @@ namespace Klijent
         private static readonly string datoteka_id = "moj_id.txt";
         private static readonly string datoteka_iznajmljivanja = "iznajmljene_knjige.txt";
         private static int id;
+        private static bool shouldStop;
         static void Main(string[] args)
         {
             Console.WriteLine("Klijent poceo sa radom.");
@@ -65,8 +66,9 @@ namespace Klijent
             #endregion
 
             #region Rad sa bibliotekom
-            bool krajRada = false;
-            while (!krajRada)
+            Console.CancelKeyPress += new ConsoleCancelEventHandler(ObradiCancelKeyPress);      // Handler za CTRL+C
+            shouldStop = false;
+            while (!shouldStop)
             {
                 IspisiMeni();
                 int komanda = UcitajKomandu();
@@ -77,7 +79,7 @@ namespace Klijent
                         zahtevanjeIznajmljivanja.ZatraziIznajmljivanje(tcpSocket, id, iznajmljeneKnjige, tcpCitanjeServis, tcpSlanjeServis);
                         break;
                     case 5:
-                        krajRada = true;
+                        shouldStop = true;
                         break;
                 }
             }
@@ -124,6 +126,12 @@ namespace Klijent
             } while (komanda < 1 || komanda > 5);
 
             return komanda;
+        }
+
+        static void ObradiCancelKeyPress(object sender, ConsoleCancelEventArgs args)
+        {
+            shouldStop = true;
+            args.Cancel = true;    // Sprecavamo server da se nasilno zatvori, zelimo da prvo sacuva podatke
         }
     }
 }

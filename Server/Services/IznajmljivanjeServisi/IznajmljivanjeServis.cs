@@ -16,6 +16,9 @@ namespace Server.Services.IznajmljivanjeServisi
         public void ObradiZahtev(Socket socket, string pocetnaPoruka, List<Iznajmljivanje> listaIznajmljivanja, List<Knjiga> listaKnjiga, TcpCitanjeServis tcpCitanjeServis, TcpSlanjeServis tcpSlanjeServis)
         {
             string[] knjigaPodaci = tcpCitanjeServis.ProcitajPoruku(socket).Split(',');
+            if (knjigaPodaci.Length != 2)       // Desio se neocekivan problem sa klijentske strane, zaustavljamo obradu
+                return;
+
             string naslov = knjigaPodaci[0];
             string autor = knjigaPodaci[1];
 
@@ -35,7 +38,12 @@ namespace Server.Services.IznajmljivanjeServisi
             
             if (!knjigaPostoji)
             {
-                tcpSlanjeServis.PosaljiPoruku(socket, "Neuspesno iznajmljivanje: Knjiga nije dostupna.");
+                tcpSlanjeServis.PosaljiPoruku(socket, "Neuspesno iznajmljivanje: Ne posedujemo tu knjigu.");
+                return;
+            }
+            else if (knjiga.Kolicina < 1)
+            {
+                tcpSlanjeServis.PosaljiPoruku(socket, "Neuspesno iznajmljivanje: Nijedan primerak te knjige trenutno nije dostupan.");
                 return;
             }
 

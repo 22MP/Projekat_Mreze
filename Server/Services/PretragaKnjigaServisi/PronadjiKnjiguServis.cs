@@ -14,8 +14,7 @@ namespace Server.Services.PretragaKnjigaServisi
             foreach (Knjiga knjiga in listaKnjiga)
             {
                 if (string.Equals(knjiga.Naslov, naslov, StringComparison.OrdinalIgnoreCase) &&
-                    string.Equals(knjiga.Autor, autor, StringComparison.OrdinalIgnoreCase) &&
-                    knjiga.Kolicina > 0)
+                    string.Equals(knjiga.Autor, autor, StringComparison.OrdinalIgnoreCase))
                 {
                     return (true, knjiga);
                 }
