@@ -4,17 +4,13 @@ using Server.Services.CuvanjePodatakaServisi;
 using Server.Services.IznajmljivanjeServisi;
 using Server.Services.PrijavljivanjeServisi;
 using Server.Services.UcitavanjePodatakaServisi;
+using Server.Services.VracanjeKnjigaServisi;
 using Services.CitanjeDatotekeServisi;
 using Services.PisanjePorukaServisi;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Server
 {
@@ -54,6 +50,7 @@ namespace Server
             TcpSlanjeServis tcpSlanjeServis = new TcpSlanjeServis();
             PrijavaKlijentaServis prijavaKlijenataServis = new PrijavaKlijentaServis();
             IznajmljivanjeServis iznajmljivanjeServis = new IznajmljivanjeServis();
+            VracanjeKnjigeServis vracanjeKnjigeServis = new VracanjeKnjigeServis();
             #endregion
 
             #region Slusanje socketa
@@ -69,7 +66,8 @@ namespace Server
 
                 Socket.Select(checkRead, null, null, 5_000_000);   // Server svakih 5s proverava da li je vreme da se ugasi
 
-                foreach (Socket socket in checkRead) {
+                foreach (Socket socket in checkRead)
+                {
                     if (socket == tcpSocket)
                     {
                         Socket clientSocket = tcpSocket.Accept();   // Prihvatamo zahtev za novu TCP konekciju od klijenta
@@ -93,6 +91,10 @@ namespace Server
                         else if (poruka.StartsWith("IZNAJMLJIVANJE"))
                         {
                             iznajmljivanjeServis.ObradiZahtev(socket, poruka, listaIznajmljivanja, listaKnjiga, tcpCitanjeServis, tcpSlanjeServis);
+                        }
+                        else if (poruka.StartsWith("VRACANJE"))
+                        {
+                            vracanjeKnjigeServis.ObradiZahtev(socket, poruka, listaIznajmljivanja, listaKnjiga, tcpCitanjeServis, tcpSlanjeServis);
                         }
                         else
                             Console.WriteLine("Greska");

@@ -1,20 +1,15 @@
-﻿using Domain.Models;
-using Klijent.Services.IznajmljivanjeServisi;
+﻿using Klijent.Services.IznajmljivanjeServisi;
 using Klijent.Services.PrijavaServisi;
 using Klijent.Services.PrijavljivanjeServisi;
+using Klijent.Services.VracanjeKnjigeServisi;
 using Server.Services.CitanjePorukaServisi;
 using Services.CitanjeDatotekeServisi;
 using Services.PisanjePorukaServisi;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Klijent
 {
@@ -51,13 +46,15 @@ namespace Klijent
             TcpSlanjeServis tcpSlanjeServis = new TcpSlanjeServis();
             PrijavaServis prijavaServis = new PrijavaServis();
             ZahtevanjeIznajmljivanja zahtevanjeIznajmljivanja = new ZahtevanjeIznajmljivanja();
+            VracanjeKnjigeServis vracanjeKnjigeServis = new VracanjeKnjigeServis();
             #endregion
 
             #region Prijavljivanje na server
             bool uspesnaPrijava;
             (uspesnaPrijava, id) = prijavaServis.PrijaviSe(id, tcpSocket, tcpCitanjeServis, tcpSlanjeServis);
 
-            if (!uspesnaPrijava) {
+            if (!uspesnaPrijava)
+            {
                 Console.WriteLine("Klijent se gasi zbog neuspesne prijave. Probajte opet.");
                 return;
             }
@@ -78,6 +75,9 @@ namespace Klijent
                     case 1:
                         zahtevanjeIznajmljivanja.ZatraziIznajmljivanje(tcpSocket, id, iznajmljeneKnjige, tcpCitanjeServis, tcpSlanjeServis);
                         break;
+                    case 2:
+                        vracanjeKnjigeServis.VratiKnjigu(id, tcpSocket, iznajmljeneKnjige, tcpCitanjeServis, tcpSlanjeServis);
+                        break;
                     case 5:
                         shouldStop = true;
                         break;
@@ -96,7 +96,7 @@ namespace Klijent
             Console.WriteLine();
             Console.WriteLine("Klijent zavrsio sa radom.");
             #endregion
-        }        
+        }
 
         private static void IspisiMeni()
         {
@@ -125,6 +125,7 @@ namespace Klijent
                 }
             } while (komanda < 1 || komanda > 5);
 
+            Console.WriteLine();
             return komanda;
         }
 

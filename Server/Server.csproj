@@ -54,6 +54,7 @@
     <Compile Include="Services\UcitavanjePodatakaServisi\UcitavanjeIznajmljivanjaServis.cs" />
     <Compile Include="Services\UcitavanjePodatakaServisi\UcitavanjeKnjigaServis.cs" />
     <Compile Include="Services\UcitavanjePodatakaServisi\UcitavanjeKorisnikaServis.cs" />
+    <Compile Include="Services\VracanjeKnjigeServisi\VracanjeKnjigeServis.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

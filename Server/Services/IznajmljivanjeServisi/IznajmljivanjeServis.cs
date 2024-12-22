@@ -4,29 +4,30 @@ using Server.Services.PretragaKnjigaServisi;
 using Services.PisanjePorukaServisi;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Services.IznajmljivanjeServisi
 {
     public class IznajmljivanjeServis
     {
-        public void ObradiZahtev(Socket socket, string pocetnaPoruka, List<Iznajmljivanje> listaIznajmljivanja, List<Knjiga> listaKnjiga, TcpCitanjeServis tcpCitanjeServis, TcpSlanjeServis tcpSlanjeServis)
+        public void ObradiZahtev(Socket socket, string poruka, List<Iznajmljivanje> listaIznajmljivanja, List<Knjiga> listaKnjiga, TcpCitanjeServis tcpCitanjeServis, TcpSlanjeServis tcpSlanjeServis)
         {
-            string[] knjigaPodaci = tcpCitanjeServis.ProcitajPoruku(socket).Split(',');
-            if (knjigaPodaci.Length != 2)       // Desio se neocekivan problem sa klijentske strane, zaustavljamo obradu
-                return;
+            string[] porukaDelovi = poruka.Split(':');      // Format: IZNAJMLJIVANJE:{ID}:{NASLOV}:{AUTOR}
 
-            string naslov = knjigaPodaci[0];
-            string autor = knjigaPodaci[1];
+            if (porukaDelovi.Length != 4)       // Desio se neocekivan problem sa klijentske strane, zaustavljamo obradu
+            {
+                tcpSlanjeServis.PosaljiPoruku(socket, "Neuspesno iznajmljivanje: Greska sa podacima.");
+                return;
+            }
+
+            string naslov = porukaDelovi[2];
+            string autor = porukaDelovi[3];
 
             int idKorisnika;
 
             try
             {
-                idKorisnika = Int32.Parse(pocetnaPoruka.Split(':')[1]);
+                idKorisnika = Int32.Parse(porukaDelovi[1]);
             }
             catch (Exception)
             {
@@ -35,7 +36,7 @@ namespace Server.Services.IznajmljivanjeServisi
             }
 
             (bool knjigaPostoji, Knjiga knjiga) = new PronadjiKnjiguServis().PronadjiKnjigu(listaKnjiga, naslov, autor);
-            
+
             if (!knjigaPostoji)
             {
                 tcpSlanjeServis.PosaljiPoruku(socket, "Neuspesno iznajmljivanje: Ne posedujemo tu knjigu.");
@@ -50,8 +51,8 @@ namespace Server.Services.IznajmljivanjeServisi
             string formatIznajmljivanja = $"{knjiga.Naslov} - {knjiga.Autor}";
             DateTime datumVracanja = DateTime.Now.AddDays(14);
 
-            tcpSlanjeServis.PosaljiPoruku(socket, $"Uspesno iznajmljivanje:{formatIznajmljivanja}");
-            tcpSlanjeServis.PosaljiPoruku(socket, $"Datum vracanja: {datumVracanja.ToString("dd.MM.yyyy")}");
+            tcpSlanjeServis.PosaljiPoruku(socket, $"Uspesno iznajmljivanje:{formatIznajmljivanja}:\n" +
+                                                  $"Datum vracanja: {datumVracanja.ToString("dd.MM.yyyy")}");
 
             Iznajmljivanje iznajmljivanje = new Iznajmljivanje(formatIznajmljivanja, idKorisnika, datumVracanja);
             listaIznajmljivanja.Add(iznajmljivanje);

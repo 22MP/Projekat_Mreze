@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Models
+﻿namespace Domain.Models
 {
     public class Knjiga
     {
-        public string Naslov {  get; set; }
-        public string Autor {  get; set; }
-        public int Kolicina {  get; set; }
+        public string Naslov { get; set; }
+        public string Autor { get; set; }
+        public int Kolicina { get; set; }
         public Knjiga() { }
 
         public Knjiga(string naslov, string autor, int kolicina)
