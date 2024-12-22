@@ -1,13 +1,17 @@
 ﻿using Domain.Models;
 using Klijent.Services.PrijavaServisi;
+using Klijent.Services.PrijavljivanjeServisi;
+using Server.Services.CitanjePorukaServisi;
 using Services.PisanjePorukaServisi;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Klijent
@@ -36,17 +40,21 @@ namespace Klijent
             #endregion
 
             #region Inicijalizacija potrebnih servisa
+            TcpCitanjeServis tcpCitanjeServis = new TcpCitanjeServis();
             TcpSlanjeServis tcpSlanjeServis = new TcpSlanjeServis();
+            PrijavaServis prijavaServis = new PrijavaServis();
             #endregion
 
             #region Prijavljivanje na server
-            bool isSent = tcpSlanjeServis.PosaljiPoruku(tcpSocket, $"PRIJAVA:{id}");
-            if (!isSent) {
+            bool uspesnaPrijava;
+            (uspesnaPrijava, id) = prijavaServis.PrijaviSe(id, tcpSocket, tcpCitanjeServis, tcpSlanjeServis);
+
+            if (!uspesnaPrijava) {
                 Console.WriteLine("Klijent se gasi zbog neuspesne prijave. Probajte opet.");
-                return;     // Greska prilikom slanja poruke -> onemogucena prijava -> klijent se gasi
+                return;
             }
-            else
-                Console.WriteLine("Uspesno slanje");
+
+            File.WriteAllText(datoteka_id, $"{id}");    // Cuvamo ID u datoteku
             #endregion
 
             #region Zatvaranje socketa

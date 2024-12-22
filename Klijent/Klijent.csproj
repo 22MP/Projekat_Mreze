@@ -45,7 +45,8 @@
   <ItemGroup>
     <Compile Include="Klijent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\PrijavaServisi\IdUcitavanjeServis.cs" />
+    <Compile Include="Services\PrijavljivanjeServisi\IdUcitavanjeServis.cs" />
+    <Compile Include="Services\PrijavljivanjeServisi\PrijavaServis.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

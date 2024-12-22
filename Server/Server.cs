@@ -1,7 +1,9 @@
 ﻿using Domain.Models;
 using Server.Services.CitanjePorukaServisi;
 using Server.Services.CuvanjePodatakaServisi;
+using Server.Services.PrijavljivanjeServisi;
 using Server.Services.UcitavanjePodatakaServisi;
+using Services.PisanjePorukaServisi;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,6 +49,8 @@ namespace Server
 
             #region Inicijalizacija potrebnih servisa
             TcpCitanjeServis tcpCitanjeServis = new TcpCitanjeServis();
+            TcpSlanjeServis tcpSlanjeServis = new TcpSlanjeServis();
+            PrijavaKlijentaServis prijavaKlijenataServis = new PrijavaKlijentaServis();
             #endregion
 
             #region Slusanje socketa
@@ -78,7 +82,10 @@ namespace Server
                         }
                         else if (poruka.StartsWith("PRIJAVA:"))
                         {
-                            Console.WriteLine("Pokusaj prijave.");
+                            bool uspesnaPrijava = prijavaKlijenataServis.ObradiPrijavu(socket, poruka, listaKorisnika, tcpSlanjeServis);
+
+                            if (!uspesnaPrijava)
+                                aktivniSocketi.Remove(socket);
                         }
                         else
                             Console.WriteLine("Greska");
