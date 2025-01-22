@@ -23,6 +23,7 @@ namespace Services.CitanjePorukaServisi
             catch (Exception e)
             {
                 poruka = String.Empty;
+                
             }
 
             return poruka;

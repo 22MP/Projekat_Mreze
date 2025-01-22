@@ -6,6 +6,7 @@ using Server.Services.CitanjePorukaServisi;
 using Services.CitanjeDatotekeServisi;
 using Services.CitanjePorukaServisi;
 using Services.PisanjePorukaServisi;
+using Services.SlanjePorukaServisi;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,9 +36,8 @@ namespace Klijent
             #region Inicijalizacija klijent socketa / Uspostavljanje veze sa serverom
             Socket tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             Socket udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-
-            EndPoint posiljaocEP = new IPEndPoint(IPAddress.Any, 0);
             IPEndPoint serverEP = new IPEndPoint(IPAddress.Loopback, 50100);
+
 
             tcpSocket.Connect(serverEP);
             Console.WriteLine("Klijent uspesno povezan");
@@ -47,6 +47,7 @@ namespace Klijent
             TcpCitanjeServis tcpCitanjeServis = new TcpCitanjeServis();
             UDPCitanjeServis udpCitanjeServis = new UDPCitanjeServis();
             TcpSlanjeServis tcpSlanjeServis = new TcpSlanjeServis();
+            UDPSlanjeServis udpSlanjeServis = new UDPSlanjeServis();
             PrijavaServis prijavaServis = new PrijavaServis();
             ZahtevanjeIznajmljivanja zahtevanjeIznajmljivanja = new ZahtevanjeIznajmljivanja();
             VracanjeKnjigeServis vracanjeKnjigeServis = new VracanjeKnjigeServis();
@@ -82,7 +83,8 @@ namespace Klijent
                         vracanjeKnjigeServis.VratiKnjigu(id, tcpSocket, iznajmljeneKnjige, tcpCitanjeServis, tcpSlanjeServis);
                         break;
                     case 3:
-                        string poruka = udpCitanjeServis.ProcitajPoruku(udpSocket, posiljaocEP);
+                        bool uspjeh = udpSlanjeServis.PosaljiPoruku(udpSocket, "Test", serverEP);
+                        Console.WriteLine(uspjeh);
                         break;
                     case 5:
                         shouldStop = true;

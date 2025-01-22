@@ -46,6 +46,7 @@
     <Compile Include="CitanjePorukaServisi\UDPCitanjeServis.cs" />
     <Compile Include="SlanjePorukaServisi\TcpSlanjeServis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SlanjePorukaServisi\UDPSlanjeServis.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

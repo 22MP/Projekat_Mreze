@@ -6,7 +6,9 @@ using Server.Services.PrijavljivanjeServisi;
 using Server.Services.UcitavanjePodatakaServisi;
 using Server.Services.VracanjeKnjigaServisi;
 using Services.CitanjeDatotekeServisi;
+using Services.CitanjePorukaServisi;
 using Services.PisanjePorukaServisi;
+using Services.SlanjePorukaServisi;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -29,7 +31,7 @@ namespace Server
             #region Inicijalizacija server socketa
             Socket tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             Socket udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            EndPoint posiljaocEP = new IPEndPoint(IPAddress.Any, 0);
+            EndPoint posiljaocEP = new IPEndPoint(IPAddress.Any,0);
             IPEndPoint serverEP = new IPEndPoint(IPAddress.Any, 50100);
             tcpSocket.Bind(serverEP);
             udpSocket.Bind(serverEP);
@@ -48,7 +50,9 @@ namespace Server
 
             #region Inicijalizacija potrebnih servisa
             TcpCitanjeServis tcpCitanjeServis = new TcpCitanjeServis();
+            UDPCitanjeServis udpCitanjeServis = new UDPCitanjeServis();
             TcpSlanjeServis tcpSlanjeServis = new TcpSlanjeServis();
+            UDPSlanjeServis udpSlanjeServis = new UDPSlanjeServis();
             PrijavaKlijentaServis prijavaKlijenataServis = new PrijavaKlijentaServis();
             IznajmljivanjeServis iznajmljivanjeServis = new IznajmljivanjeServis();
             VracanjeKnjigeServis vracanjeKnjigeServis = new VracanjeKnjigeServis();
@@ -74,7 +78,12 @@ namespace Server
                         Socket clientSocket = tcpSocket.Accept();   // Prihvatamo zahtev za novu TCP konekciju od klijenta
                         aktivniSocketi.Add(clientSocket);
                     }
-                    else if (socket != udpSocket)       // TCP poruka
+                    else if (socket == udpSocket) {
+                        string poruka = udpCitanjeServis.ProcitajPoruku(udpSocket, posiljaocEP);
+                        Console.WriteLine(poruka);
+
+                    }
+                    else // TCP poruka
                     {
                         string poruka = tcpCitanjeServis.ProcitajPoruku(socket);
 
@@ -100,6 +109,7 @@ namespace Server
                         else
                             Console.WriteLine("Greska");
                     }
+
                 }
             }
             #endregion
