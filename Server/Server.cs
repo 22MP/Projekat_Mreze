@@ -29,6 +29,7 @@ namespace Server
             #region Inicijalizacija server socketa
             Socket tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             Socket udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            EndPoint posiljaocEP = new IPEndPoint(IPAddress.Any, 0);
             IPEndPoint serverEP = new IPEndPoint(IPAddress.Any, 50100);
             tcpSocket.Bind(serverEP);
             udpSocket.Bind(serverEP);

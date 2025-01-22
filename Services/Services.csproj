@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="CitanjeDatotekeServisi\CitanjeDatotekeServis.cs" />
     <Compile Include="CitanjePorukaServisi\TcpCitanjeServis.cs" />
+    <Compile Include="CitanjePorukaServisi\UDPCitanjeServis.cs" />
     <Compile Include="SlanjePorukaServisi\TcpSlanjeServis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

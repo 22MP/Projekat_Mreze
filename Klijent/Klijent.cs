@@ -4,6 +4,7 @@ using Klijent.Services.PrijavljivanjeServisi;
 using Klijent.Services.VracanjeKnjigeServisi;
 using Server.Services.CitanjePorukaServisi;
 using Services.CitanjeDatotekeServisi;
+using Services.CitanjePorukaServisi;
 using Services.PisanjePorukaServisi;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ namespace Klijent
             Socket tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             Socket udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
+            EndPoint posiljaocEP = new IPEndPoint(IPAddress.Any, 0);
             IPEndPoint serverEP = new IPEndPoint(IPAddress.Loopback, 50100);
 
             tcpSocket.Connect(serverEP);
@@ -43,6 +45,7 @@ namespace Klijent
 
             #region Inicijalizacija potrebnih servisa
             TcpCitanjeServis tcpCitanjeServis = new TcpCitanjeServis();
+            UDPCitanjeServis udpCitanjeServis = new UDPCitanjeServis();
             TcpSlanjeServis tcpSlanjeServis = new TcpSlanjeServis();
             PrijavaServis prijavaServis = new PrijavaServis();
             ZahtevanjeIznajmljivanja zahtevanjeIznajmljivanja = new ZahtevanjeIznajmljivanja();
@@ -77,6 +80,9 @@ namespace Klijent
                         break;
                     case 2:
                         vracanjeKnjigeServis.VratiKnjigu(id, tcpSocket, iznajmljeneKnjige, tcpCitanjeServis, tcpSlanjeServis);
+                        break;
+                    case 3:
+                        string poruka = udpCitanjeServis.ProcitajPoruku(udpSocket, posiljaocEP);
                         break;
                     case 5:
                         shouldStop = true;
