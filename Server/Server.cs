@@ -80,7 +80,12 @@ namespace Server
                     }
                     else if (socket == udpSocket) {
                         string poruka = udpCitanjeServis.ProcitajPoruku(udpSocket, posiljaocEP);
-                        Console.WriteLine(poruka);
+
+                        if (poruka.StartsWith("PROVJERI DOSTUPNOST:"))
+                        {
+                            Console.WriteLine(poruka);
+                        }
+                            
 
                     }
                     else // TCP poruka

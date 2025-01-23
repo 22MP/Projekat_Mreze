@@ -48,6 +48,7 @@
     <Compile Include="Services\IznajmljivanjeServisi\ZahtevanjeIznajmljivanja.cs" />
     <Compile Include="Services\PrijavljivanjeServisi\IdUcitavanjeServis.cs" />
     <Compile Include="Services\PrijavljivanjeServisi\PrijavaServis.cs" />
+    <Compile Include="Services\ProvjeraDostupnostiServisi\ProvjeraDostupnostiServis.cs" />
     <Compile Include="Services\VracanjeKnjigeServisi\VracanjeKnjigeServis.cs" />
   </ItemGroup>
   <ItemGroup>

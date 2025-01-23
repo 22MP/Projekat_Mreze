@@ -1,6 +1,7 @@
 ﻿using Klijent.Services.IznajmljivanjeServisi;
 using Klijent.Services.PrijavaServisi;
 using Klijent.Services.PrijavljivanjeServisi;
+using Klijent.Services.ProvjeraDostupnostiServisi;
 using Klijent.Services.VracanjeKnjigeServisi;
 using Server.Services.CitanjePorukaServisi;
 using Services.CitanjeDatotekeServisi;
@@ -51,6 +52,8 @@ namespace Klijent
             PrijavaServis prijavaServis = new PrijavaServis();
             ZahtevanjeIznajmljivanja zahtevanjeIznajmljivanja = new ZahtevanjeIznajmljivanja();
             VracanjeKnjigeServis vracanjeKnjigeServis = new VracanjeKnjigeServis();
+            ProvjeraDostupnostiServis provjeraDostupnostiServis = new ProvjeraDostupnostiServis();
+
             #endregion
 
             #region Prijavljivanje na server
@@ -83,8 +86,7 @@ namespace Klijent
                         vracanjeKnjigeServis.VratiKnjigu(id, tcpSocket, iznajmljeneKnjige, tcpCitanjeServis, tcpSlanjeServis);
                         break;
                     case 3:
-                        bool uspjeh = udpSlanjeServis.PosaljiPoruku(udpSocket, "Test", serverEP);
-                        Console.WriteLine(uspjeh);
+                        provjeraDostupnostiServis.ProvjeriDostupnost(udpSocket, serverEP, udpCitanjeServis, udpSlanjeServis);
                         break;
                     case 5:
                         shouldStop = true;
