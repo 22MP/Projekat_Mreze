@@ -3,6 +3,7 @@ using Server.Services.CitanjePorukaServisi;
 using Server.Services.CuvanjePodatakaServisi;
 using Server.Services.IznajmljivanjeServisi;
 using Server.Services.PrijavljivanjeServisi;
+using Server.Services.ProvjeraDostupnostiServisi;
 using Server.Services.UcitavanjePodatakaServisi;
 using Server.Services.VracanjeKnjigaServisi;
 using Services.CitanjeDatotekeServisi;
@@ -56,6 +57,7 @@ namespace Server
             PrijavaKlijentaServis prijavaKlijenataServis = new PrijavaKlijentaServis();
             IznajmljivanjeServis iznajmljivanjeServis = new IznajmljivanjeServis();
             VracanjeKnjigeServis vracanjeKnjigeServis = new VracanjeKnjigeServis();
+            ProvjeraDostupnostiKnjige provjeraDostupnostiKnjige = new ProvjeraDostupnostiKnjige();
             #endregion
 
             #region Slusanje socketa
@@ -79,11 +81,12 @@ namespace Server
                         aktivniSocketi.Add(clientSocket);
                     }
                     else if (socket == udpSocket) {
-                        string poruka = udpCitanjeServis.ProcitajPoruku(udpSocket, posiljaocEP);
-
+                        string poruka = udpCitanjeServis.ProcitajPoruku(udpSocket, ref posiljaocEP);
+                        Console.WriteLine(poruka);
+                        
                         if (poruka.StartsWith("PROVJERI DOSTUPNOST:"))
                         {
-                            Console.WriteLine(poruka);
+                            provjeraDostupnostiKnjige.provjeriDostupnost(socket, posiljaocEP,udpSlanjeServis,poruka,listaKnjiga);
                         }
                             
 

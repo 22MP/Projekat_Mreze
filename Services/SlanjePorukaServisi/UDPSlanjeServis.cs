@@ -23,6 +23,7 @@ namespace Services.SlanjePorukaServisi
             catch (Exception e)
             {
                 isSent = false;
+                Console.WriteLine(e.Message);
                 
 
             }

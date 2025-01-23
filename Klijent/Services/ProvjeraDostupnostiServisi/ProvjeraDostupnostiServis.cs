@@ -14,15 +14,15 @@ namespace Klijent.Services.ProvjeraDostupnostiServisi
     {
         public void ProvjeriDostupnost(Socket socket,EndPoint serverEP, UDPCitanjeServis udpCitanjeServis,UDPSlanjeServis udpSlanjeServis)
         {
-            Console.Write("Naslov knjige: ");
+            Console.Write("Naslov trazene knjige: ");
             string naslov = Console.ReadLine().Trim();
 
-            Console.Write("Autor knjige: ");
+            Console.Write("Autor trazene knjige: ");
             string autor = Console.ReadLine().Trim();
 
             udpSlanjeServis.PosaljiPoruku(socket, $"PROVJERI DOSTUPNOST:{naslov}:{autor}",serverEP);
             
-            string odgovor = udpCitanjeServis.ProcitajPoruku(socket,serverEP);
+            string odgovor = udpCitanjeServis.ProcitajPoruku(socket,ref serverEP);
 
             Console.WriteLine(odgovor);
         }
