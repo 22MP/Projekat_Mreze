@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace Klijent
 {
@@ -39,8 +40,18 @@ namespace Klijent
             Socket udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             IPEndPoint serverEP = new IPEndPoint(IPAddress.Loopback, 50100);
 
-
-            tcpSocket.Connect(serverEP);
+            while (true)
+            {
+                try
+                {
+                    tcpSocket.Connect(serverEP);
+                    break;
+                }catch {
+                    Thread.Sleep(5000);
+                   
+                }
+            }
+            
             Console.WriteLine("Klijent uspesno povezan");
             #endregion
 

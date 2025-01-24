@@ -1,6 +1,7 @@
 ﻿using Domain.Models;
 using Server.Services.CitanjePorukaServisi;
 using Server.Services.CuvanjePodatakaServisi;
+using Server.Services.DodavanjeKnjigaServisi;
 using Server.Services.IznajmljivanjeServisi;
 using Server.Services.PrijavljivanjeServisi;
 using Server.Services.ProvjeraDostupnostiServisi;
@@ -28,6 +29,7 @@ namespace Server
         {
             Console.WriteLine("Server je poceo sa radom.");
             Console.WriteLine();
+
 
             #region Inicijalizacija server socketa
             Socket tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -58,6 +60,29 @@ namespace Server
             IznajmljivanjeServis iznajmljivanjeServis = new IznajmljivanjeServis();
             VracanjeKnjigeServis vracanjeKnjigeServis = new VracanjeKnjigeServis();
             ProvjeraDostupnostiKnjige provjeraDostupnostiKnjige = new ProvjeraDostupnostiKnjige();
+            DodavanjeKnjigaServis dodavanjeKnjigaServis = new DodavanjeKnjigaServis();
+            #endregion
+
+            # region Dodavanje knjige u biblioteku
+            //Dodavanje knjige je moguce samo na pocetku rada servera 
+            while (true)
+            {
+                Console.WriteLine("\nDa li zelite da dodate novu knjigu u bibloteku? Da/Ne");
+                string komanda = Console.ReadLine();
+                if (komanda.ToLower() != "da" && komanda.ToLower() != "ne")
+                {
+                    Console.WriteLine("Ponudjeni odgovori su: Da/Ne");
+                }
+                else if (komanda.ToLower() == "da")
+                {
+                    dodavanjeKnjigaServis.DodajKnjigu(listaKnjiga);
+                }
+                else if (komanda.ToLower() == "ne")
+                {
+                    break;
+                }
+
+            }
             #endregion
 
             #region Slusanje socketa
