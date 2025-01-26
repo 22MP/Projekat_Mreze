@@ -3,6 +3,7 @@ using Server.Services.CitanjePorukaServisi;
 using Server.Services.CuvanjePodatakaServisi;
 using Server.Services.DodavanjeKnjigaServisi;
 using Server.Services.IznajmljivanjeServisi;
+using Server.Services.OdredjivanjeDuznikaServisi;
 using Server.Services.PregledDostupnihServisi;
 using Server.Services.PrijavljivanjeServisi;
 using Server.Services.ProvjeraDostupnostiServisi;
@@ -63,6 +64,7 @@ namespace Server
             ProvjeraDostupnostiKnjige provjeraDostupnostiKnjige = new ProvjeraDostupnostiKnjige();
             DodavanjeKnjigaServis dodavanjeKnjigaServis = new DodavanjeKnjigaServis();
             PregledDostupnihServis pregledDostupnihServis = new PregledDostupnihServis();
+            OdredjivanjeDuznikaServis odredjivanjeDuznikaServis = new OdredjivanjeDuznikaServis();
             #endregion
 
             # region Dodavanje knjige u biblioteku
@@ -87,6 +89,10 @@ namespace Server
             }
             #endregion
 
+            #region Odredjivanje duznika 
+            List<Iznajmljivanje> duznici = odredjivanjeDuznikaServis.odredjivanjeDuznika(listaIznajmljivanja);
+            #endregion
+
             #region Slusanje socketa
             Console.CancelKeyPress += new ConsoleCancelEventHandler(ObradiCancelKeyPress);      // Handler za CTRL+C
 
@@ -107,7 +113,8 @@ namespace Server
                         Socket clientSocket = tcpSocket.Accept();   // Prihvatamo zahtev za novu TCP konekciju od klijenta
                         aktivniSocketi.Add(clientSocket);
                     }
-                    else if (socket == udpSocket) {
+                    else if (socket == udpSocket) { //UDP poruka
+
                         string poruka = udpCitanjeServis.ProcitajPoruku(udpSocket, ref posiljaocEP);
                         Console.WriteLine(poruka);
                         
@@ -118,9 +125,7 @@ namespace Server
                         else if(poruka.Equals("PREGLED DOSTUPNIH KNJIGA"))
                         {
                             pregledDostupnihServis.pregledDostupnihKjiga(udpSocket,posiljaocEP,udpSlanjeServis,poruka,listaKnjiga);
-                        }
-                            
-
+                        }      
                     }
                     else // TCP poruka
                     {
