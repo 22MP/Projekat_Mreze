@@ -50,6 +50,7 @@
     <Compile Include="Services\CuvanjePodatakaServisi\CuvanjeKorisnikaServis.cs" />
     <Compile Include="Services\DodavanjeKnjigaServisi\DodavanjeKnjigaServis.cs" />
     <Compile Include="Services\IznajmljivanjeServisi\IznajmljivanjeServis.cs" />
+    <Compile Include="Services\PregledDostupnihServisi\PregledDostupnihServis.cs" />
     <Compile Include="Services\PretragaKnjigaServisi\PronadjiKnjiguServis.cs" />
     <Compile Include="Services\PrijavljivanjeServisi\PrijavaKlijentaServis.cs" />
     <Compile Include="Services\ProvjeraDostupnostiServisi\ProvjeraDostupnostiKnjige.cs" />
@@ -71,8 +72,6 @@
       <Name>Services</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\PregledDostupnihServisi\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

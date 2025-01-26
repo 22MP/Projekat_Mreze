@@ -14,7 +14,7 @@ namespace Klijent.Services.PregledDostupnihServisi
     {
         public void pregledDostupnihKnjiga(Socket socket, EndPoint serverEP, UDPCitanjeServis udpCitanjeServis, UDPSlanjeServis udpSlanjeServis)
         {
-            udpSlanjeServis.PosaljiPoruku(socket, $"PREGLED DOSTUPNIH KNJIGA", serverEP);
+            udpSlanjeServis.PosaljiPoruku(socket, "PREGLED DOSTUPNIH KNJIGA", serverEP);
 
             string odgovor = udpCitanjeServis.ProcitajPoruku(socket, ref serverEP);
 

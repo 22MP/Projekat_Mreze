@@ -3,6 +3,7 @@ using Server.Services.CitanjePorukaServisi;
 using Server.Services.CuvanjePodatakaServisi;
 using Server.Services.DodavanjeKnjigaServisi;
 using Server.Services.IznajmljivanjeServisi;
+using Server.Services.PregledDostupnihServisi;
 using Server.Services.PrijavljivanjeServisi;
 using Server.Services.ProvjeraDostupnostiServisi;
 using Server.Services.UcitavanjePodatakaServisi;
@@ -61,6 +62,7 @@ namespace Server
             VracanjeKnjigeServis vracanjeKnjigeServis = new VracanjeKnjigeServis();
             ProvjeraDostupnostiKnjige provjeraDostupnostiKnjige = new ProvjeraDostupnostiKnjige();
             DodavanjeKnjigaServis dodavanjeKnjigaServis = new DodavanjeKnjigaServis();
+            PregledDostupnihServis pregledDostupnihServis = new PregledDostupnihServis();
             #endregion
 
             # region Dodavanje knjige u biblioteku
@@ -112,6 +114,10 @@ namespace Server
                         if (poruka.StartsWith("PROVJERI DOSTUPNOST:"))
                         {
                             provjeraDostupnostiKnjige.provjeriDostupnost(socket, posiljaocEP,udpSlanjeServis,poruka,listaKnjiga);
+                        }
+                        else if(poruka.Equals("PREGLED DOSTUPNIH KNJIGA"))
+                        {
+                            pregledDostupnihServis.pregledDostupnihKjiga(udpSocket,posiljaocEP,udpSlanjeServis,poruka,listaKnjiga);
                         }
                             
 

@@ -16,7 +16,7 @@
 
         public override string ToString()
         {
-            return $"{Naslov,-20} {Autor,-20} [{Kolicina}]";
+            return $"Naslov: {Naslov} (Autro: {Autor})\n Dostupna kolicina:{Kolicina}\n\n";
         }
     }
 }
