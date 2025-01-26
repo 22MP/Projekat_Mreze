@@ -46,6 +46,7 @@
     <Compile Include="Klijent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IznajmljivanjeServisi\ZahtevanjeIznajmljivanja.cs" />
+    <Compile Include="Services\PregledDostupnihServisi\ZahtijevanjePregledaDostupnih.cs" />
     <Compile Include="Services\PrijavljivanjeServisi\IdUcitavanjeServis.cs" />
     <Compile Include="Services\PrijavljivanjeServisi\PrijavaServis.cs" />
     <Compile Include="Services\ProvjeraDostupnostiServisi\ProvjeraDostupnostiServis.cs" />

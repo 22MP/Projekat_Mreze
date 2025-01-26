@@ -1,4 +1,5 @@
 ﻿using Klijent.Services.IznajmljivanjeServisi;
+using Klijent.Services.PregledDostupnihServisi;
 using Klijent.Services.PrijavaServisi;
 using Klijent.Services.PrijavljivanjeServisi;
 using Klijent.Services.ProvjeraDostupnostiServisi;
@@ -64,6 +65,7 @@ namespace Klijent
             ZahtevanjeIznajmljivanja zahtevanjeIznajmljivanja = new ZahtevanjeIznajmljivanja();
             VracanjeKnjigeServis vracanjeKnjigeServis = new VracanjeKnjigeServis();
             ProvjeraDostupnostiServis provjeraDostupnostiServis = new ProvjeraDostupnostiServis();
+            ZahtijevanjePregledaDostupnih zahtijevanjePregledaDostupnih = new ZahtijevanjePregledaDostupnih();
 
             #endregion
 
@@ -98,6 +100,9 @@ namespace Klijent
                         break;
                     case 3:
                         provjeraDostupnostiServis.ProvjeriDostupnost(udpSocket, serverEP, udpCitanjeServis, udpSlanjeServis);
+                        break;
+                    case 4:
+                        zahtijevanjePregledaDostupnih.pregledDostupnihKnjiga(udpSocket, serverEP, udpCitanjeServis, udpSlanjeServis);
                         break;
                     case 5:
                         shouldStop = true;
