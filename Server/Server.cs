@@ -70,7 +70,7 @@ namespace Server
             while (true)
             {
                 Console.WriteLine("\nDa li zelite da dodate novu knjigu u bibloteku? Da/Ne");
-                string komanda = Console.ReadLine();
+                string komanda = Console.ReadLine().Trim();
                 if (komanda.ToLower() != "da" && komanda.ToLower() != "ne")
                 {
                     Console.WriteLine("Ponudjeni odgovori su: Da/Ne");

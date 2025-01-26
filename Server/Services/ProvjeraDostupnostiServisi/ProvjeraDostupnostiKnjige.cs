@@ -39,11 +39,11 @@ namespace Server.Services.ProvjeraDostupnostiServisi
             }
             else if (knjiga.Kolicina < 1)
             {
-                udpSlanjeServis.PosaljiPoruku(socket, "Nijedan primerak trazene knjige trenutno nije dostupan.", posiljaocEP);
+                udpSlanjeServis.PosaljiPoruku(socket, "Nema dostupnih primjeraka trazene knjige.", posiljaocEP);
                 return;
             }
 
-            string odgovor = $"Knjiga: {knjiga.Naslov} - {knjiga.Autor} je dostupna.\nBroj primjeraka:{knjiga.Kolicina}.";
+            string odgovor = $"Trazena knjiga je dostupna.\n {knjiga}";
 
 
             udpSlanjeServis.PosaljiPoruku(socket, odgovor, posiljaocEP);

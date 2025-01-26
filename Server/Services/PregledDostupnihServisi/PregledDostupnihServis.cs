@@ -15,12 +15,28 @@ namespace Server.Services.PregledDostupnihServisi
     {
         public void pregledDostupnihKjiga(Socket socket, EndPoint posiljaocEP, UDPSlanjeServis udpSlanjeServis, string poruka, List<Knjiga> listaKnjiga)
         {
-
-            string odgovor = "Dostupne knjige:\n";
-
-            foreach (Knjiga knjiga in listaKnjiga)
+            string odgovor ="";
+            if (listaKnjiga.Count == 0) //Nismo dodali knjige u bibloteku.
             {
-                odgovor += $"\n {knjiga}";
+                odgovor = "Trenutno nema dostupnih knjiga u bibloteci.\n";
+            }
+            else
+            {
+                Console.WriteLine(listaKnjiga.Count);
+                odgovor = "Dostupne knjige:\n";
+
+                foreach (Knjiga knjiga in listaKnjiga)
+                {
+                    if (knjiga.Kolicina > 0)
+                    {
+                        odgovor += $"\n {knjiga}";
+                    }
+                }
+
+            }
+            if(odgovor.Equals("Dostupne knjige:\n")) // Dostupna kolicina svih knjiga je nula.
+            {
+                odgovor = "Trenutno nema dostupnih knjiga u bibloteci.\n";
             }
 
             udpSlanjeServis.PosaljiPoruku(socket, odgovor, posiljaocEP);
