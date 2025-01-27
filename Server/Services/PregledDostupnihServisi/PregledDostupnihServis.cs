@@ -22,7 +22,6 @@ namespace Server.Services.PregledDostupnihServisi
             }
             else
             {
-                Console.WriteLine(listaKnjiga.Count);
                 odgovor = "Dostupne knjige:\n";
 
                 foreach (Knjiga knjiga in listaKnjiga)
@@ -40,7 +39,7 @@ namespace Server.Services.PregledDostupnihServisi
             }
 
             udpSlanjeServis.PosaljiPoruku(socket, odgovor, posiljaocEP);
-            Console.WriteLine($"ODOGOVOR: \'{odgovor}\'.");
+            Console.WriteLine($"ODOGOVOR SERVERA: {odgovor}");
 
         }
     }

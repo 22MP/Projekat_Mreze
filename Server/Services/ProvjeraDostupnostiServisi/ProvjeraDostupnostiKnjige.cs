@@ -47,7 +47,7 @@ namespace Server.Services.ProvjeraDostupnostiServisi
 
 
             udpSlanjeServis.PosaljiPoruku(socket, odgovor, posiljaocEP);
-            Console.WriteLine($"ODOGOVOR: \'{odgovor}\'.");
+            Console.WriteLine($"ODOGOVOR SERVERA: {odgovor}");
         }
     }
 }

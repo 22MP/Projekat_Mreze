@@ -2,6 +2,7 @@
 using Server.Services.CitanjePorukaServisi;
 using Server.Services.CuvanjePodatakaServisi;
 using Server.Services.DodavanjeKnjigaServisi;
+using Server.Services.IstekRokaVracanjaServisi;
 using Server.Services.IznajmljivanjeServisi;
 using Server.Services.OdredjivanjeDuznikaServisi;
 using Server.Services.PregledDostupnihServisi;
@@ -65,6 +66,7 @@ namespace Server
             DodavanjeKnjigaServis dodavanjeKnjigaServis = new DodavanjeKnjigaServis();
             PregledDostupnihServis pregledDostupnihServis = new PregledDostupnihServis();
             OdredjivanjeDuznikaServis odredjivanjeDuznikaServis = new OdredjivanjeDuznikaServis();
+            ObavjestavanjeDuznikaServis obavjestavanjeDuznikaServis = new ObavjestavanjeDuznikaServis();
             #endregion
 
             # region Dodavanje knjige u biblioteku
@@ -116,7 +118,7 @@ namespace Server
                     else if (socket == udpSocket) { //UDP poruka
 
                         string poruka = udpCitanjeServis.ProcitajPoruku(udpSocket, ref posiljaocEP);
-                        Console.WriteLine(poruka);
+                        Console.WriteLine($"PORUKA KLIJENTA: {poruka}");
                         
                         if (poruka.StartsWith("PROVJERI DOSTUPNOST:"))
                         {
@@ -137,10 +139,14 @@ namespace Server
                         }
                         else if (poruka.StartsWith("PRIJAVA:"))
                         {
-                            bool uspesnaPrijava = prijavaKlijenataServis.ObradiPrijavu(socket, poruka, listaKorisnika, tcpSlanjeServis);
+                            (bool uspesnaPrijava,int id) = prijavaKlijenataServis.ObradiPrijavu(socket, poruka, listaKorisnika, tcpSlanjeServis);
 
                             if (!uspesnaPrijava)
                                 aktivniSocketi.Remove(socket);
+                            else
+                            {
+                                obavjestavanjeDuznikaServis.Obavjest(socket,id,duznici,tcpSlanjeServis);
+                            }
                         }
                         else if (poruka.StartsWith("IZNAJMLJIVANJE"))
                         {

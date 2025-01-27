@@ -49,8 +49,9 @@
     <Compile Include="Services\CuvanjePodatakaServisi\CuvanjeKnjigaServis.cs" />
     <Compile Include="Services\CuvanjePodatakaServisi\CuvanjeKorisnikaServis.cs" />
     <Compile Include="Services\DodavanjeKnjigaServisi\DodavanjeKnjigaServis.cs" />
+    <Compile Include="Services\IstekRokaVracanjaServisi\ObavjestavanjeDuznikaServis.cs" />
     <Compile Include="Services\IznajmljivanjeServisi\IznajmljivanjeServis.cs" />
-    <Compile Include="Services\OdredjivanjeDuznikaServisi\OdredjivanjeDuznikaServis.cs" />
+    <Compile Include="Services\IstekRokaVracanjaServisi\OdredjivanjeDuznikaServis.cs" />
     <Compile Include="Services\PregledDostupnihServisi\PregledDostupnihServis.cs" />
     <Compile Include="Services\PretragaKnjigaServisi\PronadjiKnjiguServis.cs" />
     <Compile Include="Services\PrijavljivanjeServisi\PrijavaKlijentaServis.cs" />

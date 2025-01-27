@@ -23,7 +23,7 @@ namespace Services.SlanjePorukaServisi
             catch (Exception e)
             {
                 isSent = false;
-                Console.WriteLine(e.Message);
+                Console.WriteLine($"Doslo je do greske: {e.Message}");
                 
 
             }

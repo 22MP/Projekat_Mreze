@@ -7,7 +7,7 @@ namespace Server.Services.PrijavljivanjeServisi
 {
     public class PrijavaKlijentaServis
     {
-        public bool ObradiPrijavu(Socket socket, string podaciZaPrijavu, List<int> listaIdKorisnika, TcpSlanjeServis tcpSlanjeServis)
+        public (bool,int) ObradiPrijavu(Socket socket, string podaciZaPrijavu, List<int> listaIdKorisnika, TcpSlanjeServis tcpSlanjeServis)
         {
             int idKorisnika;
 
@@ -30,7 +30,7 @@ namespace Server.Services.PrijavljivanjeServisi
                 listaIdKorisnika.Add(idKorisnika);
             }
 
-            return tcpSlanjeServis.PosaljiPoruku(socket, $"Uspesna prijava. ID:{idKorisnika}");
+            return (tcpSlanjeServis.PosaljiPoruku(socket, $"Uspesna prijava. ID:{idKorisnika}"),idKorisnika);
         }
     }
 }

@@ -82,6 +82,11 @@ namespace Klijent
             File.WriteAllText(datoteka_id, $"{id}");    // Cuvamo ID u datoteku
             #endregion
 
+            #region Obavjestenje o isteku roka vracanja knjige
+            string istekaoRok = tcpCitanjeServis.ProcitajPoruku(tcpSocket); // Server salje poruku u kojoj nas obavjestava da je istekao rok za vracanje knjige 
+            Console.WriteLine(istekaoRok);
+            #endregion
+
             #region Rad sa bibliotekom
             Console.CancelKeyPress += new ConsoleCancelEventHandler(ObradiCancelKeyPress);      // Handler za CTRL+C
             shouldStop = false;
