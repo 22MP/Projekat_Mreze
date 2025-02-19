@@ -1,13 +1,9 @@
-﻿using Services.CitanjePorukaServisi;
+﻿using Domain.Models;
 using Services.SlanjePorukaServisi;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Models;
+using System.Net.Sockets;
 
 namespace Server.Services.PregledDostupnihServisi
 {
@@ -15,7 +11,7 @@ namespace Server.Services.PregledDostupnihServisi
     {
         public void pregledDostupnihKjiga(Socket socket, EndPoint posiljaocEP, UDPSlanjeServis udpSlanjeServis, string poruka, List<Knjiga> listaKnjiga)
         {
-            string odgovor ="";
+            string odgovor = "";
             if (listaKnjiga.Count == 0) //Nismo dodali knjige u bibloteku.
             {
                 odgovor = "Trenutno nema dostupnih knjiga u bibloteci.\n";
@@ -33,7 +29,7 @@ namespace Server.Services.PregledDostupnihServisi
                 }
 
             }
-            if(odgovor.Equals("Dostupne knjige:\n")) // Dostupna kolicina svih knjiga je nula.
+            if (odgovor.Equals("Dostupne knjige:\n")) // Dostupna kolicina svih knjiga je nula.
             {
                 odgovor = "Trenutno nema dostupnih knjiga u bibloteci.\n";
             }

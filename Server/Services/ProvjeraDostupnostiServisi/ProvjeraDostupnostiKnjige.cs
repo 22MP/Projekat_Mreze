@@ -1,21 +1,16 @@
-﻿using Services.CitanjePorukaServisi;
+﻿using Domain.Models;
+using Server.Services.PretragaKnjigaServisi;
 using Services.SlanjePorukaServisi;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Models;
-using Server.Services.PretragaKnjigaServisi;
-using Services.PisanjePorukaServisi;
+using System.Net.Sockets;
 
 namespace Server.Services.ProvjeraDostupnostiServisi
 {
     public class ProvjeraDostupnostiKnjige
     {
-        public void provjeriDostupnost(Socket socket, EndPoint posiljaocEP, UDPSlanjeServis udpSlanjeServis,string poruka, List<Knjiga> listaKnjiga)
+        public void provjeriDostupnost(Socket socket, EndPoint posiljaocEP, UDPSlanjeServis udpSlanjeServis, string poruka, List<Knjiga> listaKnjiga)
         {
             string[] dijeloviPoruke = poruka.Split(':');      // Format poruke: PROVJERI DOSTUPNOST:{naslov}:{autor}
 
@@ -28,7 +23,7 @@ namespace Server.Services.ProvjeraDostupnostiServisi
             string naslov = dijeloviPoruke[1];
             string autor = dijeloviPoruke[2];
 
-            
+
 
             (bool postoji, Knjiga knjiga) = new PronadjiKnjiguServis().PronadjiKnjigu(listaKnjiga, naslov, autor); // Trazi knjigu u listi dostupnih, ne provjerava kolicinu
 

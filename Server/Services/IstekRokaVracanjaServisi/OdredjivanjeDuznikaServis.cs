@@ -10,14 +10,14 @@ namespace Server.Services.OdredjivanjeDuznikaServisi
         public List<Iznajmljivanje> odredjivanjeDuznika(List<Iznajmljivanje> listaIznajmljivanja)
         {
 
-            List<Iznajmljivanje> duznici =  new List<Iznajmljivanje>();
+            List<Iznajmljivanje> duznici = new List<Iznajmljivanje>();
 
-            foreach(Iznajmljivanje iz in listaIznajmljivanja)
+            foreach (Iznajmljivanje iz in listaIznajmljivanja)
             {
-                
+
                 if (iz.DatumVracanja <= DateTime.Now.Date)
                 {
-                    
+
                     duznici.Add(iz);
                 }
             }

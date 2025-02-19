@@ -47,12 +47,14 @@ namespace Klijent
                 {
                     tcpSocket.Connect(serverEP);
                     break;
-                }catch {
+                }
+                catch
+                {
                     Thread.Sleep(5000);
-                   
+
                 }
             }
-            
+
             Console.WriteLine("Klijent uspesno povezan");
             #endregion
 
@@ -80,11 +82,6 @@ namespace Klijent
             }
 
             File.WriteAllText(datoteka_id, $"{id}");    // Cuvamo ID u datoteku
-            #endregion
-
-            #region Obavjestenje o isteku roka vracanja knjige
-            string istekaoRok = tcpCitanjeServis.ProcitajPoruku(tcpSocket); // Server salje poruku u kojoj nas obavjestava da je istekao rok za vracanje knjige 
-            Console.WriteLine(istekaoRok);
             #endregion
 
             #region Rad sa bibliotekom

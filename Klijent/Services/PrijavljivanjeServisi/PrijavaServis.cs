@@ -19,7 +19,7 @@ namespace Klijent.Services.PrijavljivanjeServisi
 
             try
             {
-                id = Int32.Parse(podaciOPrijavi.Split(':')[1]);     // Format: Uspesna prijava. ID:{ID}
+                id = Int32.Parse(podaciOPrijavi.Split(' ')[3]);     // Format: Uspesna prijava. ID:{ID}
             }
             catch (Exception)
             {

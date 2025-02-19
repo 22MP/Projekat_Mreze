@@ -1,4 +1,6 @@
-﻿using Services.PisanjePorukaServisi;
+﻿using Domain.Models;
+using Server.Services.IstekRokaVracanjaServisi;
+using Services.PisanjePorukaServisi;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -7,7 +9,8 @@ namespace Server.Services.PrijavljivanjeServisi
 {
     public class PrijavaKlijentaServis
     {
-        public (bool,int) ObradiPrijavu(Socket socket, string podaciZaPrijavu, List<int> listaIdKorisnika, TcpSlanjeServis tcpSlanjeServis)
+
+        public (bool, int) ObradiPrijavu(Socket socket, string podaciZaPrijavu, List<int> listaIdKorisnika, TcpSlanjeServis tcpSlanjeServis, ObavjestavanjeDuznikaServis obavjestavanjeDuznikaServis, List<Iznajmljivanje> duznici)
         {
             int idKorisnika;
 
@@ -30,7 +33,8 @@ namespace Server.Services.PrijavljivanjeServisi
                 listaIdKorisnika.Add(idKorisnika);
             }
 
-            return (tcpSlanjeServis.PosaljiPoruku(socket, $"Uspesna prijava. ID:{idKorisnika}"),idKorisnika);
+            string poruka = obavjestavanjeDuznikaServis.Obavjest(socket, idKorisnika, duznici, tcpSlanjeServis);
+            return (tcpSlanjeServis.PosaljiPoruku(socket, $"Uspesna prijava. ID: {idKorisnika} \n{poruka}"), idKorisnika);
         }
     }
 }
